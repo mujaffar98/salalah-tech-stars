@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
@@ -8,6 +8,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +18,18 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Handle hash scroll after navigation
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.slice(1));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    }
+  }, [location]);
+
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/services", label: "Services" },
@@ -24,8 +37,27 @@ const Header = () => {
     { href: "/#contact", label: "Contact" },
   ];
 
+  const handleNavClick = (href: string, e: React.MouseEvent) => {
+    if (href.startsWith("/#")) {
+      e.preventDefault();
+      const hash = href.slice(1); // Get "#about" or "#contact"
+      
+      if (location.pathname === "/") {
+        // Already on home page, just scroll
+        const element = document.getElementById(hash.slice(1));
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        // Navigate to home page with hash
+        navigate("/" + hash);
+      }
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   const isActive = (href: string) => {
-    if (href === "/") return location.pathname === "/";
+    if (href === "/") return location.pathname === "/" && !location.hash;
     if (href.startsWith("/#")) return location.pathname === "/" && location.hash === href.slice(1);
     return location.pathname === href;
   };
@@ -76,6 +108,7 @@ const Header = () => {
                 <Link
                   key={link.href}
                   to={link.href}
+                  onClick={(e) => handleNavClick(link.href, e)}
                   className={`font-heading font-medium transition-colors relative py-2 ${
                     isActive(link.href)
                       ? "text-gold"
@@ -121,7 +154,7 @@ const Header = () => {
                       ? "bg-primary text-primary-foreground"
                       : "text-foreground hover:bg-secondary"
                   }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => handleNavClick(link.href, e)}
                 >
                   {link.label}
                 </Link>
