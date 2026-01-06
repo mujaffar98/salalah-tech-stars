@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckCircle, Award, Users, Headphones, Target, Shield, Zap, Globe } from "lucide-react";
+import { motion } from "framer-motion";
 
 const features = [
   {
@@ -61,7 +62,7 @@ const stats = [
 
 const About = () => {
   return (
-    <div className="min-h-screen">
+    <motion.div className="min-h-screen" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <Header />
       <main>
         {/* Hero Section */}
@@ -194,7 +195,7 @@ const About = () => {
         </section>
       </main>
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 
