@@ -4,10 +4,16 @@ import ServicesSection from "@/components/ServicesSection";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <motion.div 
+      className="min-h-screen"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <Header />
       <main>
         <Hero />
@@ -16,7 +22,7 @@ const Index = () => {
         <ContactSection />
       </main>
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 

@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const contactInfo = [
   {
@@ -30,7 +31,7 @@ const contactInfo = [
 
 const Contact = () => {
   return (
-    <div className="min-h-screen">
+    <motion.div className="min-h-screen" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <Header />
       <main>
         {/* Hero Section */}
@@ -217,7 +218,7 @@ const Contact = () => {
         </section>
       </main>
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 
